@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      routes:
+        - id: productservice
+          uri: lb://productservice
+          predicates:
+            - Path=/productos/**
+        - id: orderservice
+          uri: lb://orderservice
+          predicates:
+            - Path=/ordenes/**
+        - id: paymentservice
+          uri: lb://paymentservice
+          predicates:
+            - Path=/pagos/**
+    aws:
+      region: us-east-1
+      credentials:
+        access-key: admin
+        secret-key: admin
+      cloudwatch:
+        endpoint: http://localstack:4566
+      logging:
+        log-group: practica-microservicios
+        log-stream: api-gateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/
