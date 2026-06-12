@@ -6,7 +6,24 @@ spring:
     name: apigateway
   cloud:
     gateway:
+      globalcors:
+        add-to-trigger-preflight: true
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
+        - id: shippingservice
+          uri: lb://shippingservice
+          predicates:
+            - Path=/ordenes/envios/**
         - id: productservice
           uri: lb://productservice
           predicates:
